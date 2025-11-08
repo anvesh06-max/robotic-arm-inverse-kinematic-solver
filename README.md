@@ -6,168 +6,114 @@ The solver also supports URDF export and PyBullet simulation.
 
 Overview
 
-This project follows the conventions from Saeed B. Niku’s Introduction to Robotics (2nd Edition) and provides closed-form (analytic) inverse kinematic solutions only, without using any numerical approximation.
-It is developed for educational, research, and demonstration purposes, allowing users to visualize robotic kinematics through Matplotlib and PyBullet simulations.
+This project is a Python-based robotic arm inverse kinematic solver that follows textbook Denavit–Hartenberg (DH) conventions.
+It focuses purely on analytic (closed-form) inverse kinematics, avoiding any numerical or approximate solutions.
 
-Features
+Using this program, a user can ➜
+• Define the DH parameters of a manipulator
+• Compute both forward and inverse kinematics
+• Automatically generate a URDF file
+• Visualize the arm and motion in PyBullet
+• Export joint trajectories to CSV
 
-Analytic-only inverse kinematics (no numerical methods used)
+It’s designed to make robotic arm kinematics both visual and interactive.
 
-Supports multiple manipulators:
+⚙️ Supported Robot Types
 
-2R and 3R planar arms
+The solver supports these standard manipulators analytically:
 
-SCARA (RRP)
+➜ Cartesian (PPP)
+➜ Cylindrical (PRP)
+➜ SCARA (RRP)
+➜ Planar 2R and 3R arms
+➜ 6R Spherical wrist robot
 
-Cylindrical (PRP)
+Each one uses only textbook equations — no iterative solvers.
 
-Cartesian (PPP)
+🧩 Features
 
-6R spherical wrist
+➜ Implements textbook-accurate DH transformations
+➜ Analytic forward and inverse kinematics
+➜ Automatic URDF generation
+➜ Real-time visualization in PyBullet
+➜ Matplotlib 3D plotting of robot frames
+➜ CSV trajectory generation for motion study
+➜ Joint limit handling for safer simulations
 
-Automatic generation of DH tables and transformation matrices
+📂 Repository Layout
 
-URDF model export for simulation
+➜ src → contains the main solver script niku_dh_pipeline.py
+➜ data → includes DH_Table_inputs.pdf with all manipulator DH parameters
+➜ outputs → stores simulation and trajectory outputs
+➜ Project_report.pdf → complete documentation of theory and results
+➜ LICENSE → open MIT license for free use and modification
+➜ README.md → project overview and usage guide
+➜ requirements.txt → all Python dependencies
 
-3D visualization using Matplotlib
-
-PyBullet simulation and animation support
-
-Saves trajectory and joint mapping data to CSV files
-
-
-
-Example DH Parameter Files
-2R Planar Robot
-Link,a(i-1) (m),alpha(i-1) (deg),d(i) (m),theta(i) (deg),joint_type,q_min,q_max
-1,0.25,0.0,0.0,0.0,R,-180,180
-2,0.25,0.0,0.0,0.0,R,-180,180
-
-3R Planar Robot
-Link,a(i-1) (m),alpha(i-1) (deg),d(i) (m),theta(i) (deg),joint_type,q_min,q_max
-1,0.25,0.0,0.0,0.0,R,-180,180
-2,0.25,0.0,0.0,0.0,R,-180,180
-3,0.1,0.0,0.0,0.0,R,-180,180
-
-SCARA (RRP) Robot
+🧾 Example DH Table (SCARA RRP)
 Link,a(i-1) (m),alpha(i-1) (deg),d(i) (m),theta(i) (deg),joint_type,q_min,q_max
 1,0.3,0.0,0.4,0.0,R,-180,180
 2,0.2,0.0,0.0,0.0,R,-180,180
-3,0.0,0.0,0.1,0.0,P,0.0,0.2
-
-Usage Instructions
-
-To run the solver, use:
-
-python3 src/niku_dh_pipeline.py
+3,0.0,0.0,0.1,0.0,P,0.1,0.3
 
 
-Steps:
+This example defines a standard SCARA manipulator with two rotary joints and one prismatic joint.
 
-Enter the number of links (1–6).
+🧮 How to Run
 
-Enter DH parameters manually or load them from a CSV file.
+Open a terminal and go to the project folder
+➜ cd src
 
-Choose the coordinate system (cartesian, cylindrical, or spherical).
+Run the solver
+➜ python niku_dh_pipeline.py
 
-Provide the target position and, optionally, the end-effector orientation.
+Follow the prompts:
+• Enter link parameters (a, alpha, d, theta, joint type)
+• Select the coordinate system (Cartesian / Cylindrical / Spherical)
+• Enter the target position (and orientation if required)
+• View results in the console, Matplotlib window, and PyBullet simulation
 
-The program will:
+🧠 Background
 
-Compute forward and inverse kinematics.
+The project is based on classic references:
 
-Display a 3D robot visualization using Matplotlib.
+• M. S. Niku, Introduction to Robotics: Analysis, Control, Applications (2nd Edition)
+• Denavit & Hartenberg (1955), A Kinematic Notation for Lower-Pair Mechanisms
+• PyBullet Documentation – for URDF-based simulation and visualization
 
-Export a URDF and start a PyBullet simulation.
+📘 Input Reference
 
-Save output data in the outputs folder.
-
-Example Console Run
-Enter number of links (1-6): 2
-Enter parameters for link 1:
-  a = 0.25
-  alpha = 0
-  d = 0
-  theta = 0
-  joint type = R
-  q_min = -180
-  q_max = 180
-
-Enter parameters for link 2:
-  a = 0.25
-  alpha = 0
-  d = 0
-  theta = 0
-  joint type = R
-  q_min = -180
-  q_max = 180
-
-Select coordinate system: cartesian
-Enter target X (m): 0.3
-Enter target Y (m): 0.1
-Enter target Z (m): 0
-Include end-effector orientation? (y/n): n
-
-Example Output
---- Planar 2R Analytic Derivation ---
-Branch 1: theta1 = 14.036°, theta2 = 52.564°
-Branch 2: theta1 = 66.598°, theta2 = -52.564°
-
-IK Solution (rad/deg):
-Joint 1: 0.245 rad, 14.036 deg
-Joint 2: 0.917 rad, 52.564 deg
-
-URDF saved to robot.urdf
-Trajectory saved to trajectory.csv
-Joint map saved to joint_map.txt
-Starting PyBullet simulation...
+All manipulator DH parameters used in this project (2R, 3R, SCARA) are compiled in
+data/DH_Table_inputs.pdf
 
 
-Output files generated:
+🛠️ Installation
 
-outputs:
- robot.urdf
- trajectory.csv
- joint_map.txt
-
-
-When the process completes, a PyBullet window opens and visualizes the robotic arm moving to the specified target position.
-
-Dependencies
-
-To install all required Python libraries, run:
+To install all required libraries:
 
 pip install -r requirements.txt
 
 
-The requirements file should include:
+Required Packages
+• numpy
+• matplotlib
+• pandas
+• pybullet
 
-numpy
-pandas
-matplotlib
-pybullet
+⚖️ License
 
-References
+This project is released under the MIT License.
 
-Saeed B. Niku, Introduction to Robotics: Analysis, Control, Applications (2nd Edition)
+You are free to use, modify, and distribute it with proper attribution.
 
-PyBullet Documentation: https://pybullet.org
+💡 Acknowledgements
 
-NumPy: https://numpy.org
+Special thanks to
 
-Matplotlib: https://matplotlib.org
 
-Pandas: https://pandas.pydata.org
+💬 Final Note
 
-License
+This project bridges theory and practice in robotics.
+By connecting Denavit–Hartenberg modeling, analytic inverse kinematics, and URDF-based simulation, it shows how mathematical models turn into real motion.
 
-This project is licensed under the MIT License.
-See the LICENSE file for details.
-
-Author
-
-Anvesh M
-B.Tech in Automation and Robotics, Amrita University
-Interested in robotics, kinematics, and simulation.
-
-If you find this project useful, please consider starring the repository.
+Robotics is not just about moving links – it’s about understanding how structure creates motion.”e consider starring the repository.
