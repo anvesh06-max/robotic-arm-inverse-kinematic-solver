@@ -35,26 +35,7 @@ PyBullet simulation and animation support
 
 Saves trajectory and joint mapping data to CSV files
 
-Project Structure
-robotic-arm-inverse-kinematic-solver/
-│
-├── src/
-│   └── niku_dh_pipeline.py        # Main Python program
-│
-├── data/
-│   ├── DH_Table_2R.csv
-│   ├── DH_Table_3R.csv
-│   └── DH_Table_SCARA.csv
-│
-├── outputs/
-│   ├── robot.urdf
-│   ├── trajectory.csv
-│   └── joint_map.txt
-│
-├── README.md
-├── requirements.txt
-├── LICENSE
-└── .gitignore
+
 
 Example DH Parameter Files
 2R Planar Robot
@@ -144,10 +125,10 @@ Starting PyBullet simulation...
 
 Output files generated:
 
-outputs/
- ├── robot.urdf
- ├── trajectory.csv
- └── joint_map.txt
+outputs:
+ robot.urdf
+ trajectory.csv
+ joint_map.txt
 
 
 When the process completes, a PyBullet window opens and visualizes the robotic arm moving to the specified target position.
